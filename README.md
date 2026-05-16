@@ -7,7 +7,10 @@
   <img src="https://img.shields.io/badge/3x--ui-v2.4%2B-blueviolet?style=for-the-badge" alt="3x-ui">
 </p>
 
-<h1 align="center">3X-UI CSM — CLI Subscription Manager    (В ожидании релиза!!!)</h1>
+<h1 align="center">3X-UI CSM — CLI Subscription Manager</h1>
+
+<p align="center">
+<b>В ожидании релиза!</b>
 
 <p align="center">
   <b>CLI-инструмент для автоматического сбора VPN-ключей с нескольких панелей 3x-UI и формирования единого файла подписки (base64/plain text) с раздачей через Nginx.</b>
