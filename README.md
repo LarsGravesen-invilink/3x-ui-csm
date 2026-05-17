@@ -1,4 +1,3 @@
-![Uploading 3xuicsm.jpg…]()
 <p align="center">
   <img src="https://img.shields.io/badge/version-1.0-blue?style=for-the-badge" alt="Version">
   <img src="https://img.shields.io/badge/license-MIT-green?style=for-the-badge" alt="License">
@@ -7,7 +6,7 @@
   <img src="https://img.shields.io/badge/3x--ui-v2.4%2B-blueviolet?style=for-the-badge" alt="3x-ui">
 </p>
 
-<h1 align="center">3X-UI CSM — Client Subscription Manager</h1>
+<h1 align="center">3X-UI CSM — CLI Subscription Manager</h1>
 
 <p align="center">
   <b>CLI-инструмент для автоматического сбора VPN-ключей с панелей 3x-UI<br>и формирования единого файла подписки с раздачей через Nginx.</b>
