@@ -1,3 +1,4 @@
+</p><img width="914" height="511" alt="3xuicsm" src="https://github.com/user-attachments/assets/fb1b1799-3a90-4301-be29-3d8f7b989825" />
 <p align="center">
   <img src="https://img.shields.io/badge/version-1.0-blue?style=for-the-badge" alt="Version">
   <img src="https://img.shields.io/badge/license-MIT-green?style=for-the-badge" alt="License">
@@ -135,5 +136,5 @@ sudo bash /tmp/3xcsm-install.sh
 
 <p align="center">
   <sub>Если проект полезен — поставьте ⭐ на GitHub</sub>
-</p>
-![Uploading Screenshot_2026-05-16-15-30-31-35_99c04817c0de5652397fc8b56c3b3817.jpg…]()
+
+
