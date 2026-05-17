@@ -239,7 +239,7 @@ sudo bash /tmp/3xcsm-install.sh
     0) Client-1
     1) Client-2
 
-  [Инбаунд 9] SNI-invilink [vless]
+  [Инбаунд 9] VLESS-KASKAD [vless]
     2) Client-3
 
     a) Все клиенты
