@@ -88,7 +88,7 @@ sudo bash /tmp/3xcsm-install.sh
 1. Показывает экран приветствия с описанием
 2. Ждёт нажатия **Enter** для продолжения
 3. Показывает список компонентов, которые будут установлены
-4. Устанавливает все зависимости: curl, jq, nginx, cron, certbot, nano, qrencode, openssl
+4. Проверяет и устанавливает все зависимости: curl, jq, nginx, cron, certbot, nano, qrencode, openssl
 5. Создаёт директории и конфигурационные файлы
 6. Запускает пошаговую настройку доступа к подписке
 
@@ -105,7 +105,7 @@ sudo bash /tmp/3xcsm-install.sh
 
 ### Шаг 1 из 6: Домен
 
-Скрипт спросит: **Использовать домен вместо IP для подписки?**
+Скрипт спросит: **Использовать домен вместо IP для раздачи подписки?**
 
 - Если у вас есть домен, направленный на этот сервер — введите `y` и укажите домен
 - Если домена нет — введите `n`, подписка будет доступна по IP-адресу
@@ -159,7 +159,7 @@ sudo bash /tmp/3xcsm-install.sh
 ### Как выглядит главное меню
 
 ```
-  Серверов: 2 | Ключей: 15 | Автообновление: ● 59мин
+  Серверов: 10 | Ключей: 15 | Автообновление: ● 59мин
   Обновлено: 2026-05-18 12:00:00 (часовой пояс сервера)
 
     1)  ➕  Добавить сервер с 3x-UI
@@ -217,7 +217,7 @@ sudo bash /tmp/3xcsm-install.sh
 ```
     0) ● [vless] VLESS │ :443 │ 5 кл.
     1) ● [vless] VLESS-KASKAD │ :8443 │ 1 кл.
-    2) ● [vless] SNI-invilink │ :9443 │ 2 кл.
+    2) ● [vless] VLESS-DIRECT │ :9443 │ 2 кл.
 
     a) Выбрать ВСЕ
     0) ← Назад
@@ -236,11 +236,11 @@ sudo bash /tmp/3xcsm-install.sh
 
 ```
   [Инбаунд 1] VLESS [vless]
-    0) MyCudyRouter
-    1) MyXiaomiRouter
+    0) Client-1
+    1) Client-2
 
   [Инбаунд 9] SNI-invilink [vless]
-    2) test-test
+    2) Client-3
 
     a) Все клиенты
     Или номера через пробел
@@ -297,9 +297,9 @@ sudo bash /tmp/3xcsm-install.sh
   Текущие настройки задания:
   ├─ Инбаунды: 2 шт. [1,9]
   ├─ Клиенты: 3 шт.
-  │  MyCudyRouter
-  │  MyXiaomiRouter
-  │  test-test
+  │  Client-1
+  │  Client-2
+  │  Client-3
 
     1) Выбрать клиентов (подключиться к серверу)
     2) Удалить клиента из задания
@@ -479,9 +479,9 @@ sudo bash /tmp/3xcsm-install.sh
       https://185.88.36.226:46669
       Инбаунды: 2 шт. | Клиенты: 3 шт.
       Ключей в подписке: 3
-        - [vless] :443 MyCudyRouter
-        - [vless] :443 MyXiaomiRouter
-        - [vless] :9443 test-test
+        - [vless] :443 Client-1
+        - [vless] :443 Client-2
+        - [vless] :443 Client-3
 
   Всего ключей в подписке: 3
   Последнее обновление: 2026-05-18 12:00:00
@@ -499,7 +499,7 @@ sudo bash /tmp/3xcsm-install.sh
 
 - Версия скрипта
 - Ссылка на GitHub
-- Ссылка на Telegram
+- Ссылка на Telegram профиль автора
 - QR-код Telegram-профиля
 - Список поддерживаемых протоколов
 - Требования к версии 3x-UI
@@ -564,6 +564,7 @@ sudo bash /tmp/3xcsm-install.sh
 | Клиент | Платформа | Подписка |
 |--------|-----------|----------|
 | **Hiddify** | Android, iOS, Windows, macOS, Linux | ✅ Полная |
+| **Happ** | Android, iOS, Windows, macOS, Linux | ✅ Полная |
 | **v2rayNG** | Android | ✅ Полная |
 | **v2rayN** | Windows | ✅ Полная |
 | **Nekoray** | Windows, Linux | ✅ Полная |
