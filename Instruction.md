@@ -71,15 +71,15 @@ ssh root@ваш_ip_адрес
 ### Шаг 2. Запустите установку одной командой
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/LarsGravesen-invilink/3x-ui-csm/main/install.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/LarsGravesen-invilink/3x-ui-csm/main/3xcsm.sh)
 ```
 
 Или скачайте и запустите вручную:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/LarsGravesen-invilink/3x-ui-csm/main/install.sh -o /tmp/3xcsm-install.sh
-chmod +x /tmp/3xcsm-install.sh
-sudo bash /tmp/3xcsm-install.sh
+curl -fsSL https://raw.githubusercontent.com/LarsGravesen-invilink/3x-ui-csm/main/install.sh -o /tmp/3xcsm.sh
+chmod +x /tmp/3xcsm.sh
+sudo bash /tmp/3xcsm.sh
 ```
 
 ### Шаг 3. Что происходит при установке
