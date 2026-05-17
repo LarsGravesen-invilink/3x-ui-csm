@@ -14,7 +14,7 @@
 # Требования: 3x-UI v2.4.0+ (рекомендуется v2.5.0+)
 # Поддержка: HTTP/HTTPS, self-signed SSL, Let's Encrypt
 #
-# Запуск: bash 3xcsm-install.sh или 3xsub (после установки)
+# Запуск в терминале после установки: 3xsub 
 # ===========================================================================
 
 readonly VERSION="1.0"
@@ -499,9 +499,17 @@ EOJSON
     current_step=$((current_step + 1))
     progress_bar $current_step $total_steps "Создание команды 3xsub..."
     
-    cp -f "$(realpath "$0" 2>/dev/null || echo "$0")" "${BASE_DIR}/3xcsm.sh" 2>/dev/null
-    chmod +x "${BASE_DIR}/3xcsm.sh" 2>/dev/null
-    
+    mkdir -p "${BASE_DIR}"
+    SCRIPT_SOURCE="$(realpath "${BASH_SOURCE[0]}")"
+	
+	if [[ -f "$SCRIPT_SOURCE" ]]; then
+        cp -f "$SCRIPT_SOURCE" "${BASE_DIR}/3xcsm.sh"
+		chmod +x "${BASE_DIR}/3xcsm.sh"
+    else
+	    echo "Ошибка: не удалось определить путь к скрипту"
+	    exit 1
+    fi	
+	
     cat > "$SUBUP_CMD" <<'SUBCMD'
 #!/bin/bash
 exec bash /opt/3xcsm/3xcsm.sh --menu "$@"
