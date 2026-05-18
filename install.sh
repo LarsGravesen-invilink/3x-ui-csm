@@ -1,27 +1,21 @@
 #!/bin/bash
-    set -e
+set -e
 
-        REPO="https://raw.githubusercontent.com/LarsGravesen-invilink/3x-ui-csm/main"
-        BASE_DIR="/opt/3xcsm"
-        BIN="/usr/local/bin/3xsub"
-        LOCAL_VERSION="1.0"
+REPO="https://raw.githubusercontent.com/LarsGravesen-invilink/3x-ui-csm/main"
+BASE_DIR="/opt/3xcsm"
+BIN="/usr/local/bin/3xsub"
 
-        REMOTE_VERSION=$(curl -fsSL "$REPO/version.txt" 2>/dev/null || echo "0")
-        REMOTE_VERSION=$(echo "$REMOTE_VERSION" | tr -d '\n\r')
+mkdir -p "$BASE_DIR"
 
-    echo "Local version: $LOCAL_VERSION"
-    echo "Remote version: $REMOTE_VERSION"
+curl -fsSL "$REPO/3xcsm.sh" -o "$BASE_DIR/3xcsm.sh"
+chmod +x "$BASE_DIR/3xcsm.sh"
 
-    mkdir -p "$BASE_DIR"
-
-    curl -fsSL "$REPO/3xcsm.sh" -o "$BASE_DIR/3xcsm.sh"
-    chmod +x "$BASE_DIR/3xcsm.sh"
-
-    cat > "$BIN" <<'EOF'
+cat > "$BIN" <<'EOF'
 #!/bin/bash
 exec bash /opt/3xcsm/3xcsm.sh --menu "$@"
 EOF
 
-    chmod +x "$BIN"
+chmod +x "$BIN"
 
-    echo "Установлена версия: $REMOTE_VERSION"
+# запуск сразу после установки
+bash /opt/3xcsm/3xcsm.sh --menu
