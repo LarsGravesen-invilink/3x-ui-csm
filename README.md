@@ -74,9 +74,9 @@ mkdir -p /opt/3xcsm && curl -fsSL https://raw.githubusercontent.com/LarsGravesen
 Или скачать и запустить вручную:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/LarsGravesen-invilink/3x-ui-csm/main/3xcsm.sh -o /opt/3xcsm.sh
-chmod +x /opt/install.sh
-sudo bash /opt/install.sh
+curl -fsSL https://raw.githubusercontent.com/LarsGravesen-invilink/3x-ui-csm/main/3xcsm.sh -o /tmp/3xcsm.sh
+chmod +x /tmp/3xcsm.sh
+sudo bash /tmp/3xcsm.sh
 ```
 
 После установки:
