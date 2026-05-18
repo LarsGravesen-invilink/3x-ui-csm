@@ -74,7 +74,7 @@ bash <(curl -fsSL https://raw.githubusercontent.com/LarsGravesen-invilink/3x-ui-
 Или скачать и запустить вручную:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/LarsGravesen-invilink/3x-ui-csm/main/install.sh -o /tmp/3xcsm.sh
+curl -fsSL https://raw.githubusercontent.com/LarsGravesen-invilink/3x-ui-csm/main/3xcsm.sh -o /tmp/3xcsm.sh
 chmod +x /tmp/3xcsm.sh
 sudo bash /tmp/3xcsm.sh
 ```
