@@ -306,7 +306,7 @@ print_installer_header() {
     echo -e "  ${GREEN}*${NC} Полное удаление и сброс настроек"
     echo ""
     echo -e "${CYAN}  ──────────────────────────────────────────────────${NC}"
-    echo -e "  ${GRAY}Запуск:${NC} ${WHITE}3xsub${NC}"
+    echo -e "  ${GRAY}Запуск:${NC} ${WHITE}bash 3xsub${NC}"
     echo -e "${CYAN}  ══════════════════════════════════════════════════${NC}"
     echo ""
 }
@@ -498,36 +498,16 @@ EOJSON
     # --- Шаг 9: Команда 3xsub ---
     current_step=$((current_step + 1))
     progress_bar $current_step $total_steps "Создание команды 3xsub..."
-
-    mkdir -p "${BASE_DIR}"
-
-    # определяем источник скрипта
-    SCRIPT_SOURCE="${BASH_SOURCE[0]}"
-
-    if [[ "$SCRIPT_SOURCE" == /dev/fd/* || -z "$SCRIPT_SOURCE" ]]; then
-        SCRIPT_SOURCE="$0"
-    fi
-
-    # финальная проверка
-    if [[ ! -f "$SCRIPT_SOURCE" ]]; then
-    echo "Ошибка: не удалось определить путь к скрипту"
-    exit 1
-    fi
-
-    # создаём основной файл
-    cp -f "$SCRIPT_SOURCE" "${BASE_DIR}/3xcsm.sh"
-    chmod +x "${BASE_DIR}/3xcsm.sh"
-
-    # создаём команду 3xsub
+    
+    cp -f "$(realpath "$0" 2>/dev/null || echo "$0")" "${BASE_DIR}/3xcsm.sh" 2>/dev/null
+    chmod +x "${BASE_DIR}/3xcsm.sh" 2>/dev/null
+    
     cat > "$SUBUP_CMD" <<'SUBCMD'
 #!/bin/bash
 exec bash /opt/3xcsm/3xcsm.sh --menu "$@"
 SUBCMD
-
     chmod +x "$SUBUP_CMD"
-
     progress_bar $current_step $total_steps "Команда 3xsub создана"
-
     sleep 0.2
     
     # --- Шаг 10: Финализация ---
