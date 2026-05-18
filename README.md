@@ -65,13 +65,7 @@
 
 ---
 
-## Быстрая установка
-
-```bash
-mkdir -p /opt/3xcsm && curl -fsSL https://raw.githubusercontent.com/LarsGravesen-invilink/3x-ui-csm/main/3xcsm.sh -o /opt/3xcsm/3xcsm.sh && chmod +x /opt/3xcsm/3xcsm.sh && ln -sf /opt/3xcsm/3xcsm.sh /usr/local/bin/3xsub && 3xsub
-```
-
-Или скачать и запустить вручную:
+Cкачать и запустить в терминале:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/LarsGravesen-invilink/3x-ui-csm/main/3xcsm.sh -o /tmp/3xcsm.sh
@@ -79,7 +73,7 @@ chmod +x /tmp/3xcsm.sh
 sudo bash /tmp/3xcsm.sh
 ```
 
-После установки:
+После установки, используйте команду в терминале для быстрого запуска:
 
 ```bash
 3xsub
