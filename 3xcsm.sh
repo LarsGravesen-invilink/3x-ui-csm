@@ -14,7 +14,7 @@
 # Требования: 3x-UI v2.4.0+ (рекомендуется v2.5.0+)
 # Поддержка: HTTP/HTTPS, self-signed SSL, Let's Encrypt
 #
-# Запуск в терминале после установки: 3xsub 
+# Запуск: 3xsub (после установки)
 # ===========================================================================
 
 readonly VERSION="1.0"
@@ -498,24 +498,36 @@ EOJSON
     # --- Шаг 9: Команда 3xsub ---
     current_step=$((current_step + 1))
     progress_bar $current_step $total_steps "Создание команды 3xsub..."
-    
+
     mkdir -p "${BASE_DIR}"
-    SCRIPT_SOURCE="$(realpath "${BASH_SOURCE[0]}")"
-	
-	if [[ -f "$SCRIPT_SOURCE" ]]; then
-        cp -f "$SCRIPT_SOURCE" "${BASE_DIR}/3xcsm.sh"
-		chmod +x "${BASE_DIR}/3xcsm.sh"
-    else
-	    echo "Ошибка: не удалось определить путь к скрипту"
-	    exit 1
-    fi	
-	
+
+    # определяем источник скрипта
+    SCRIPT_SOURCE="${BASH_SOURCE[0]}"
+
+    if [[ "$SCRIPT_SOURCE" == /dev/fd/* || -z "$SCRIPT_SOURCE" ]]; then
+        SCRIPT_SOURCE="$0"
+    fi
+
+    # финальная проверка
+    if [[ ! -f "$SCRIPT_SOURCE" ]]; then
+    echo "Ошибка: не удалось определить путь к скрипту"
+    exit 1
+    fi
+
+    # создаём основной файл
+    cp -f "$SCRIPT_SOURCE" "${BASE_DIR}/3xcsm.sh"
+    chmod +x "${BASE_DIR}/3xcsm.sh"
+
+    # создаём команду 3xsub
     cat > "$SUBUP_CMD" <<'SUBCMD'
 #!/bin/bash
 exec bash /opt/3xcsm/3xcsm.sh --menu "$@"
 SUBCMD
+
     chmod +x "$SUBUP_CMD"
+
     progress_bar $current_step $total_steps "Команда 3xsub создана"
+
     sleep 0.2
     
     # --- Шаг 10: Финализация ---
