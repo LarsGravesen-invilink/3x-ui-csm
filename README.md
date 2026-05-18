@@ -68,15 +68,15 @@
 ## Быстрая установка
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/LarsGravesen-invilink/3x-ui-csm/main/install.sh)
+mkdir -p /opt/3xcsm && curl -fsSL https://raw.githubusercontent.com/LarsGravesen-invilink/3x-ui-csm/main/3xcsm.sh -o /opt/3xcsm/3xcsm.sh && chmod +x /opt/3xcsm/3xcsm.sh && ln -sf /opt/3xcsm/3xcsm.sh /usr/local/bin/3xsub && 3xsub
 ```
 
 Или скачать и запустить вручную:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/LarsGravesen-invilink/3x-ui-csm/main/3xcsm.sh -o /tmp/install.sh
-chmod +x /tmp/install.sh
-sudo bash /tmp/install.sh
+curl -fsSL https://raw.githubusercontent.com/LarsGravesen-invilink/3x-ui-csm/main/3xcsm.sh -o /opt/3xcsm.sh
+chmod +x /opt/install.sh
+sudo bash /opt/install.sh
 ```
 
 После установки:
