@@ -470,7 +470,7 @@ sudo bash /tmp/3xcsm.sh
 
 ```
   [1] Finland ON
-      https://185.88.36.226:46669
+      https://example.com:2050
       Инбаунды: 2 шт. | Клиенты: 3 шт.
       Ключей в подписке: 3
         - [vless] :443 Client-1
@@ -610,15 +610,6 @@ sudo bash /tmp/3xcsm.sh
 - **1) Добавить к уже выбранным** — новый выбор добавляется к старому
 - **2) Использовать только новый выбор** — старый выбор заменяется
 
-### Как обновить скрипт
-
-Запустите установку заново:
-
-```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/LarsGravesen-invilink/3x-ui-csm/main/install.sh)
-```
-
-Конфигурация и серверы сохранятся.
 
 ### При вводе данных допустил ошибку — как отменить?
 
@@ -642,5 +633,5 @@ bash <(curl -fsSL https://raw.githubusercontent.com/LarsGravesen-invilink/3x-ui-
 ---
 
 <p align="center">
-  <sub>3X-UI CSM v1.0 | <a href="https://t.me/LarsInvilink">Telegram</a> | <a href="https://github.com/LarsGravesen-invilink/3x-ui-csm">GitHub</a></sub>
+  <sub>3X-UI CSM v1.0 | <a href="https://t.me/LarsInvilink">Telegram</a>
 </p>
