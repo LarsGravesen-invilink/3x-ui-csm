@@ -213,12 +213,10 @@ check_3xui_version() {
     local protocol="$3"
     local web_path="$4"
     local cookie_file="$5"
-    
-    # Пробуем получить версию через API
+
     local base_url
     base_url=$(build_panel_url "$panel_address" "$panel_port" "$web_path" "$protocol")
-    
-    # Версия может быть в разных местах
+
     local version_endpoints=(
         "/server/status"
         "/xui/API/server/status"
@@ -371,10 +369,8 @@ show_welcome_screen() {
 }
 
 install_dependencies() {
-    # Показываем начальный экран приветствия
     show_welcome_screen
-    
-    # Экран установки пакетов
+
     print_installer_header
     
     echo ""
@@ -384,16 +380,14 @@ install_dependencies() {
     
     local total_steps=11
     local current_step=0
-    
-    # --- Шаг 1: Обновление пакетов ---
+
     current_step=$((current_step + 1))
     echo ""
     progress_bar $current_step $total_steps "Обновление списка пакетов..."
     apt-get update -qq > /dev/null 2>&1
     progress_bar $current_step $total_steps "Список пакетов обновлён"
     sleep 0.3
-    
-    # --- Шаг 2: curl ---
+
     current_step=$((current_step + 1))
     progress_bar $current_step $total_steps "Установка curl..."
     if ! command -v curl &>/dev/null; then
@@ -401,8 +395,7 @@ install_dependencies() {
     fi
     progress_bar $current_step $total_steps "curl готов"
     sleep 0.2
-    
-    # --- Шаг 3: jq ---
+ 
     current_step=$((current_step + 1))
     progress_bar $current_step $total_steps "Установка jq..."
     if ! command -v jq &>/dev/null; then
@@ -410,8 +403,7 @@ install_dependencies() {
     fi
     progress_bar $current_step $total_steps "jq готов"
     sleep 0.2
-    
-    # --- Шаг 4: nginx ---
+
     current_step=$((current_step + 1))
     progress_bar $current_step $total_steps "Установка Nginx..."
     if ! command -v nginx &>/dev/null; then
@@ -419,8 +411,7 @@ install_dependencies() {
     fi
     progress_bar $current_step $total_steps "Nginx готов"
     sleep 0.2
-    
-    # --- Шаг 5: cron ---
+
     current_step=$((current_step + 1))
     progress_bar $current_step $total_steps "Установка cron..."
     if ! command -v crontab &>/dev/null; then
@@ -430,8 +421,7 @@ install_dependencies() {
     systemctl start cron > /dev/null 2>&1
     progress_bar $current_step $total_steps "cron готов"
     sleep 0.2
-    
-    # --- Шаг 6: certbot (для SSL) ---
+
     current_step=$((current_step + 1))
     progress_bar $current_step $total_steps "Установка Certbot..."
     if ! command -v certbot &>/dev/null; then
@@ -447,8 +437,7 @@ install_dependencies() {
     fi
     progress_bar $current_step $total_steps "qrencode готов"
     sleep 0.2
-    
-    # --- Шаг 8: Создание директорий ---
+
     current_step=$((current_step + 1))
     progress_bar $current_step $total_steps "Создание директорий..."
     mkdir -p "$BASE_DIR" "$COOKIE_DIR" "$WEB_DIR" 2>/dev/null
@@ -456,8 +445,7 @@ install_dependencies() {
     chmod 755 "$WEB_DIR"
     progress_bar $current_step $total_steps "Директории созданы"
     sleep 0.2
-    
-    # --- Шаг 8: Инициализация конфигов ---
+
     current_step=$((current_step + 1))
     progress_bar $current_step $total_steps "Инициализация конфигурации..."
     
@@ -494,8 +482,7 @@ EOJSON
     fi
     progress_bar $current_step $total_steps "Конфигурация готова"
     sleep 0.2
-    
-    # --- Шаг 9: Команда 3xsub ---
+
     current_step=$((current_step + 1))
     progress_bar $current_step $total_steps "Создание команды 3xsub..."
     
@@ -509,20 +496,16 @@ SUBCMD
     chmod +x "$SUBUP_CMD"
     progress_bar $current_step $total_steps "Команда 3xsub создана"
     sleep 0.2
-    
-    # --- Шаг 10: Финализация ---
+
     current_step=$((current_step + 1))
     progress_done "Установка компонентов завершена!"
     
     sleep 1
-    
-    # Запрос настроек домена и SSL
+
     setup_domain_and_ssl
-    
-    # Настройка Nginx
+
     setup_nginx_config
-    
-    # Финальный вывод
+
     show_installation_complete
 }
 
@@ -537,9 +520,6 @@ setup_domain_and_ssl() {
     local server_ip
     server_ip=$(curl -4 -s --connect-timeout 5 ifconfig.me 2>/dev/null || hostname -I 2>/dev/null | awk '{print $1}' || echo "ВАШ_IP")
     
-    # ═══════════════════════════════════════════════════════════════════════════
-    # ШАГ 1: ВОПРОС О ДОМЕНЕ
-    # ═══════════════════════════════════════════════════════════════════════════
     print_installer_header
     
     echo ""
@@ -563,10 +543,7 @@ setup_domain_and_ssl() {
     
     if [[ "$use_domain_answer" =~ ^[Yy]$ ]]; then
         use_domain="true"
-        
-        # ═══════════════════════════════════════════════════════════════════════
-        # ШАГ 1.1: ВВОД ДОМЕНА
-        # ═══════════════════════════════════════════════════════════════════════
+
         print_installer_header
         
         echo ""
@@ -588,9 +565,7 @@ setup_domain_and_ssl() {
             use_domain="false"
             sleep 1
         else
-            # ═══════════════════════════════════════════════════════════════════
-            # ШАГ 1.2: ВОПРОС О SSL
-            # ═══════════════════════════════════════════════════════════════════
+
             print_installer_header
             
             echo ""
@@ -624,8 +599,7 @@ setup_domain_and_ssl() {
             fi
         fi
     fi
-    
-    # Если домен не используется — запрашиваем порт
+
     if [[ "$use_domain" == "false" ]]; then
         print_installer_header
         
@@ -647,10 +621,7 @@ setup_domain_and_ssl() {
         read -r custom_port
         [[ -n "$custom_port" ]] && web_port="$custom_port"
     fi
-    
-    # ═══════════════════════════════════════════════════════════════════════════
-    # ШАГ 2: КОДИРОВАНИЕ URL
-    # ═══════════════════════════════════════════════════════════════════════════
+
     print_installer_header
     
     echo ""
@@ -674,7 +645,7 @@ setup_domain_and_ssl() {
     
     if [[ "$encode_answer" =~ ^[Yy]$ ]]; then
         encode_url="true"
-        # Генерируем случайный путь и кодируем в base64
+
         local random_string
         random_string=$(head /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 16)
         encoded_path=$(echo -n "$random_string" | base64 | tr -d '=' | tr '+/' '-_')
@@ -713,8 +684,7 @@ setup_domain_and_ssl() {
         fi
     fi
     sleep 0.5
-    
-    # Сохраняем настройки
+
     config_set "use_domain" "$use_domain"
     config_set "domain" "$domain"
     config_set "use_ssl" "$use_ssl"
@@ -751,11 +721,9 @@ setup_nginx_config() {
     if [[ "$encode_url" == "true" && -n "$encoded_path" ]]; then
         sub_path="/${encoded_path}"
     fi
-    
-    # Прогресс настройки
+
     progress_bar 1 4 "Создание конфигурации Nginx..."
-    
-    # Создаём базовую конфигурацию Nginx (HTTP)
+
     cat > "$NGINX_CONF" <<EONGINX
 server {
     listen ${web_port};
@@ -811,13 +779,11 @@ EONGINX
     sleep 0.2
     
     progress_done "Nginx настроен"
-    
-    # Если нужен SSL — запускаем certbot
+
     if [[ "$use_ssl" == "true" && -n "$domain" ]]; then
         echo ""
         echo ""
-        
-        # Экран SSL
+
         print_installer_header
         
         echo ""
@@ -830,8 +796,7 @@ EONGINX
         echo ""
         
         spin_start "Получение SSL-сертификата..."
-        
-        # Сначала нужен HTTP на 80 для проверки
+
         local temp_conf="/tmp/certbot_temp.conf"
         cat > "$temp_conf" <<EOTEMP
 server {
@@ -843,8 +808,7 @@ server {
 EOTEMP
         cp "$temp_conf" "$NGINX_CONF"
         nginx -t > /dev/null 2>&1 && systemctl reload nginx > /dev/null 2>&1
-        
-        # Запускаем certbot
+
         certbot --nginx -d "$domain" --non-interactive --agree-tos --email "admin@${domain}" --redirect > /dev/null 2>&1
         local cert_rc=$?
         
@@ -863,7 +827,6 @@ EOTEMP
             msg_info "Продолжаем без SSL..."
             
             config_set "use_ssl" "false"
-            # Восстанавливаем HTTP конфигурацию
             setup_nginx_config_http "$domain" "$web_port" "$sub_path"
         fi
         
@@ -916,8 +879,7 @@ show_installation_complete() {
     
     local server_ip
     server_ip=$(curl -4 -s --connect-timeout 5 ifconfig.me 2>/dev/null || hostname -I 2>/dev/null | awk '{print $1}' || echo "ВАШ_IP")
-    
-    # Формируем URL подписки
+
     local protocol="http"
     [[ "$use_ssl" == "true" ]] && protocol="https"
     
@@ -931,8 +893,7 @@ show_installation_complete() {
     [[ "$web_port" == "443" || "$web_port" == "80" ]] && port_str=""
     
     local sub_url="${protocol}://${host}${port_str}${path}"
-    
-    # Финальный экран установки
+
     print_installer_header
     
     echo ""
@@ -1127,7 +1088,6 @@ _decrypt() {
     echo -n "$cipher" | openssl enc -aes-256-cbc -d -a -A -pbkdf2 -pass "pass:${key}" 2>/dev/null
 }
 
-# User-Agent для имитации браузера
 readonly USER_AGENT="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
 rawurlencode() {
@@ -1185,7 +1145,6 @@ api_login() {
 
     local response http_code success html_page csrf_token
 
-    # ШАГ 1: GET главной страницы
     debug_log "Step 1: GET main page..."
     
     html_page=$(curl -sS -k -L \
@@ -1204,7 +1163,6 @@ api_login() {
 
     debug_log "CSRF Token: ${csrf_token:0:20}..."
 
-    # ШАГ 2: POST /login с CSRF
     if [[ -n "$csrf_token" ]]; then
         debug_log "Step 2: POST /login with CSRF..."
         
@@ -1238,7 +1196,6 @@ api_login() {
             return 0
         fi
 
-        # Пробуем JSON
         debug_log "Trying JSON body..."
         
         html_page=$(curl -sS -k -L -c "$cookie_file" \
@@ -1274,7 +1231,6 @@ api_login() {
         fi
     fi
 
-    # ШАГ 3: Fallback
     debug_log "Step 3: Fallback endpoints..."
     
     local login_endpoints=(
@@ -1417,7 +1373,6 @@ api_test_connection() {
     echo -e "  ${GRAY}└─ Логин: ${username}${NC}"
     echo ""
 
-    # Шаг 1: TCP
     msg_info "Шаг 1: Проверка TCP-соединения..."
     if timeout 5 bash -c "cat < /dev/null > /dev/tcp/${address}/${port}" 2>/dev/null; then
         msg_ok "TCP-порт $port открыт"
@@ -1427,7 +1382,6 @@ api_test_connection() {
         return 1
     fi
 
-    # Шаг 2: HTTP
     msg_info "Шаг 2: Проверка HTTP-ответа..."
     local base_url
     base_url=$(build_panel_url "$address" "$port" "$web_path" "$protocol")
@@ -1448,7 +1402,6 @@ api_test_connection() {
         msg_warn "HTTP-ответ: $http_check"
     fi
 
-    # Шаг 3: Авторизация
     msg_info "Шаг 3: Авторизация в панели..."
     
     if api_login "$address" "$port" "$username" "$password" "$web_path" "$protocol" "$cookie_file"; then
@@ -1469,7 +1422,6 @@ api_test_connection() {
         fi
     fi
 
-    # Шаг 4: Инбаунды и версия
     msg_info "Шаг 4: Получение данных панели..."
     local inbounds
     inbounds=$(api_get_inbounds "$address" "$port" "$web_path" "$protocol" "$cookie_file")
@@ -1482,7 +1434,6 @@ api_test_connection() {
         msg_ok "Инбаундов: $total_inb (поддерживаемых: $supported_inb)"
     fi
 
-    # Проверка версии
     local panel_version
     panel_version=$(check_3xui_version "$address" "$port" "$protocol" "$web_path" "$cookie_file")
     
@@ -1533,7 +1484,6 @@ extract_keys() {
 
     local params="type=${network}&security=${security}"
 
-    # Reality
     if [[ "$security" == "reality" ]]; then
         local reality_settings pbk fp sni sid spx
         reality_settings=$(echo "$stream_settings" | jq '.realitySettings // {}' 2>/dev/null)
@@ -1551,7 +1501,6 @@ extract_keys() {
         [[ -n "$spx" && "$spx" != "null" && "$spx" != "/" ]] && params+="&spx=$(urlencode "$spx")"
     fi
 
-    # TLS
     if [[ "$security" == "tls" ]]; then
         local tls_settings sni fp alpn
         tls_settings=$(echo "$stream_settings" | jq '.tlsSettings // {}' 2>/dev/null)
@@ -1565,7 +1514,6 @@ extract_keys() {
         [[ -n "$alpn" && "$alpn" != "null" && "$alpn" != "" ]] && params+="&alpn=$(urlencode "$alpn")"
     fi
 
-    # Network settings
     case "$network" in
         ws)
             local ws_path ws_host
@@ -1616,7 +1564,6 @@ extract_keys() {
             ;;
     esac
 
-    # Clients
     local settings_raw settings
     settings_raw=$(echo "$inbound_json" | jq -r '.settings // "{}"' 2>/dev/null)
 
@@ -1757,8 +1704,7 @@ urlencode() {
 
 collect_keys() {
     local silent_mode="${1:-false}"
-    
-    # Обновляем переменные файла подписки
+
     init_sub_vars
 
     if [[ "$silent_mode" != "true" ]]; then
@@ -2176,7 +2122,6 @@ menu_add_server() {
     print_thin_line
     echo ""
 
-    # --- Название ---
     echo -e "  ${WHITE}1. Название сервера${NC}"
     msg_hint "Произвольное имя для идентификации (например: Germany-1, Основной)"
     echo ""
@@ -2185,7 +2130,6 @@ menu_add_server() {
     [[ "$srv_name" == "0" ]] && return
     [[ -z "$srv_name" ]] && { msg_err "Название не может быть пустым"; pause_key; return; }
 
-    # --- Адрес ---
     echo ""
     echo -e "  ${WHITE}2. Адрес панели 3x-UI${NC}"
     msg_hint "IP-адрес или домен сервера, где установлена панель"
@@ -2196,7 +2140,6 @@ menu_add_server() {
     [[ "$srv_address" == "0" ]] && return
     [[ -z "$srv_address" ]] && { msg_err "Адрес не может быть пустым"; pause_key; return; }
 
-    # --- Порт ---
     echo ""
     echo -e "  ${WHITE}3. Порт панели${NC}"
     msg_hint "Стандартный порт 3x-UI: 2053 (HTTPS) или 2052 (HTTP)"
@@ -2207,7 +2150,6 @@ menu_add_server() {
     [[ "$srv_port" == "0" ]] && return
     [[ -z "$srv_port" ]] && srv_port=2053
 
-    # --- SSL ---
     echo ""
     echo -e "  ${WHITE}4. Протокол подключения${NC}"
     msg_hint "3x-UI v2.8+ по умолчанию использует HTTPS с self-signed SSL"
@@ -2219,7 +2161,6 @@ menu_add_server() {
     local use_ssl="true"
     [[ "$srv_ssl" =~ ^[Nn]$ ]] && use_ssl="false"
 
-    # --- Web Path ---
     echo ""
     echo -e "  ${WHITE}5. Web Base Path (секретный путь)${NC}"
     msg_hint "Находится в настройках панели: Panel Settings → Web Base Path"
@@ -2229,11 +2170,9 @@ menu_add_server() {
     echo -ne "  ${WHITE}   Web Base Path (пусто если нет): ${NC}"
     read -r srv_webpath
     [[ "$srv_webpath" == "0" ]] && return
-    # Убираем слеши если пользователь их ввёл
     srv_webpath="${srv_webpath#/}"
     srv_webpath="${srv_webpath%/}"
 
-    # --- Логин ---
     echo ""
     echo -e "  ${WHITE}6. Логин от панели${NC}"
     msg_hint "Имя пользователя для входа в 3x-UI (обычно: admin)"
@@ -2243,7 +2182,6 @@ menu_add_server() {
     [[ "$srv_user" == "0" ]] && return
     [[ -z "$srv_user" ]] && { msg_err "Логин не может быть пустым"; pause_key; return; }
 
-    # --- Пароль ---
     echo ""
     echo -e "  ${WHITE}7. Пароль от панели${NC}"
     msg_hint "Пароль для входа (ввод скрыт)"
@@ -2254,7 +2192,6 @@ menu_add_server() {
     [[ "$srv_pass" == "0" ]] && return
     [[ -z "$srv_pass" ]] && { msg_err "Пароль не может быть пустым"; pause_key; return; }
 
-    # --- Проверка подключения ---
     local protocol="http"
     [[ "$use_ssl" == "true" ]] && protocol="https"
 
@@ -2323,8 +2260,7 @@ menu_add_server() {
         fi
     else
         msg_ok "Авторизация успешна!"
-        
-        # Проверка версии
+
         local panel_version
         panel_version=$(check_3xui_version "$srv_address" "$srv_port" "$protocol" "$srv_webpath" "$test_cookie")
         
@@ -2336,7 +2272,6 @@ menu_add_server() {
         fi
     fi
 
-    # --- Выбор инбаундов ---
     local inbounds_filter='"all"'
 
     if [[ $login_rc -eq 0 ]]; then
@@ -2435,8 +2370,7 @@ menu_add_server() {
                         msg_warn "Ничего не выбрано, добавлены все"
                     fi
                 fi
-                
-                # --- Выбор клиентов ---
+
                 echo ""
                 echo -e "  ${WHITE}Выбрать конкретных клиентов из инбаундов?${NC}"
                 echo -ne "  ${WHITE}(y/n) [n — все]: ${NC}"
@@ -3686,13 +3620,11 @@ menu_manual_update() {
 
 menu_sub_info() {
     while true; do
-        # Обновляем переменные файла подписки
         init_sub_vars
         
         print_header
         print_section_header "ФАЙЛ ПОДПИСКИ"
 
-        # Получаем настройки
         local use_domain=$(config_get "use_domain" "false")
         local domain=$(config_get "domain" "")
         local use_ssl=$(config_get "use_ssl" "false")
@@ -3703,7 +3635,6 @@ menu_sub_info() {
         local server_ip
         server_ip=$(curl -4 -s --connect-timeout 3 ifconfig.me 2>/dev/null || hostname -I 2>/dev/null | awk '{print $1}' || echo "?.?.?.?")
 
-        # Формируем URL
         local protocol="http"
         [[ "$use_ssl" == "true" ]] && protocol="https"
         
@@ -4079,8 +4010,7 @@ menu_domain_settings() {
         
         local server_ip
         server_ip=$(curl -4 -s --connect-timeout 3 ifconfig.me 2>/dev/null || hostname -I 2>/dev/null | awk '{print $1}' || echo "?.?.?.?")
-        
-        # Формируем текущий URL
+
         local protocol="http"
         [[ "$use_ssl" == "true" ]] && protocol="https"
         
@@ -4094,8 +4024,7 @@ menu_domain_settings() {
         [[ "$web_port" == "443" || "$web_port" == "80" ]] && port_str=""
         
         local sub_url="${protocol}://${host}${port_str}${path}"
-        
-        # Статусы
+
         local domain_status="${RED}○ Выкл (используется IP)${NC}"
         [[ "$use_domain" == "true" && -n "$domain" ]] && domain_status="${GREEN}● Вкл${NC} ${GRAY}(${domain})${NC}"
         
@@ -4119,8 +4048,7 @@ menu_domain_settings() {
         echo ""
         print_thin_line
         echo ""
-        
-        # Опции меню
+
         if [[ "$use_domain" == "true" ]]; then
             echo -e "  ${WHITE}  1) Переключить на IP-адрес${NC}"
         else
@@ -4156,7 +4084,6 @@ menu_domain_settings() {
             0) return ;;
             1)
                 if [[ "$use_domain" == "true" ]]; then
-                    # Переключаем на IP
                     echo ""
                     echo -ne "  ${WHITE}Переключить на IP-адрес? (y/n): ${NC}"
                     read -r confirm
@@ -4164,19 +4091,16 @@ menu_domain_settings() {
                         config_set "use_domain" "false"
                         config_set "domain" ""
                         config_set "use_ssl" "false"
-                        
-                        # Запрашиваем порт
+
                         echo -ne "  ${WHITE}Порт для HTTP [8443]: ${NC}"
                         read -r new_port
                         [[ -z "$new_port" ]] && new_port="8443"
                         config_set "web_port" "$new_port"
-                        
-                        # Обновляем Nginx
+
                         update_nginx_config
                         msg_ok "Переключено на IP-адрес"
                     fi
                 else
-                    # Настраиваем домен
                     echo ""
                     echo -e "  ${WHITE}Введите домен:${NC}"
                     msg_hint "Например: sub.example.com, vpn.mydomain.ru"
@@ -4188,8 +4112,7 @@ menu_domain_settings() {
                     if [[ -n "$new_domain" ]]; then
                         config_set "use_domain" "true"
                         config_set "domain" "$new_domain"
-                        
-                        # Спрашиваем про SSL
+
                         echo ""
                         echo -ne "  ${WHITE}Настроить SSL для ${new_domain}? (y/n) [y]: ${NC}"
                         read -r ssl_answer
@@ -4197,8 +4120,7 @@ menu_domain_settings() {
                         if [[ ! "$ssl_answer" =~ ^[Nn]$ ]]; then
                             config_set "use_ssl" "true"
                             config_set "web_port" "443"
-                            
-                            # Обновляем Nginx и получаем SSL
+
                             update_nginx_config
                             obtain_ssl_certificate "$new_domain"
                         else
@@ -4224,7 +4146,6 @@ menu_domain_settings() {
                 fi
                 
                 if [[ "$use_ssl" == "true" ]]; then
-                    # Отключаем SSL
                     echo ""
                     echo -ne "  ${WHITE}Отключить SSL? (y/n): ${NC}"
                     read -r confirm
@@ -4239,7 +4160,6 @@ menu_domain_settings() {
                         msg_ok "SSL отключён"
                     fi
                 else
-                    # Включаем SSL
                     echo ""
                     msg_info "Получение SSL-сертификата для ${domain}..."
                     config_set "use_ssl" "true"
@@ -4263,7 +4183,6 @@ menu_domain_settings() {
                 ;;
             4)
                 if [[ "$encode_url" == "true" ]]; then
-                    # Отключаем кодирование
                     echo ""
                     echo -ne "  ${WHITE}Отключить кодирование пути? (y/n): ${NC}"
                     read -r confirm
@@ -4277,7 +4196,6 @@ menu_domain_settings() {
                         msg_ok "Кодирование пути отключено. Новый путь: /${SUB_FILENAME}"
                     fi
                 else
-                    # Включаем кодирование
                     echo ""
                     local random_string
                     random_string=$(head /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 16)
@@ -4299,7 +4217,6 @@ menu_domain_settings() {
                 pause_key
                 ;;
             5)
-                # Изменение имени файла подписки
                 echo ""
                 echo -e "  ${WHITE}Текущее имя файла:${NC} ${CYAN}${SUB_FILENAME}${NC}"
                 echo ""
@@ -4310,25 +4227,20 @@ menu_domain_settings() {
                 read -r new_filename
                 
                 if [[ -n "$new_filename" ]]; then
-                    # Проверяем корректность имени
                     if [[ "$new_filename" =~ ^[a-zA-Z0-9._-]+$ ]]; then
                         local old_file="$SUB_FILE"
-                        
-                        # Сохраняем новое имя
+
                         config_set "sub_filename" "$new_filename"
-                        
-                        # Обновляем переменные
+
                         init_sub_vars
-                        
-                        # Переименовываем файл если он существует
+
                         if [[ -f "$old_file" ]]; then
                             mv "$old_file" "$SUB_FILE" 2>/dev/null
                             msg_ok "Файл переименован: ${new_filename}"
                         else
                             msg_ok "Имя файла изменено: ${new_filename}"
                         fi
-                        
-                        # Обновляем конфигурацию Nginx
+
                         update_nginx_config
                     else
                         msg_err "Некорректное имя файла"
@@ -4460,7 +4372,6 @@ obtain_ssl_certificate() {
     echo ""
     spin_start "Получение SSL-сертификата для ${domain}..."
     
-    # Временная конфигурация для certbot
     cat > "$NGINX_CONF" <<EOTEMP
 server {
     listen 80;
@@ -4471,8 +4382,7 @@ server {
 EOTEMP
     
     nginx -t > /dev/null 2>&1 && systemctl reload nginx > /dev/null 2>&1
-    
-    # Запускаем certbot
+
     certbot --nginx -d "$domain" --non-interactive --agree-tos --email "admin@${domain}" --redirect > /dev/null 2>&1
     local cert_rc=$?
     
@@ -4613,7 +4523,6 @@ menu_uninstall() {
         return
     fi
 
-    # Спрашиваем про файл подписки отдельно
     echo ""
     echo -e "  ${YELLOW}Удалить также файл подписки?${NC}"
     echo -e "  ${GRAY}Файл: ${SUB_FILE}${NC}"
@@ -4630,41 +4539,35 @@ menu_uninstall() {
     local total_steps=6
     [[ "$delete_subscription" == "true" ]] && total_steps=6 || total_steps=5
     local current_step=0
-    
-    # Шаг 1: Удаление cron
+
     current_step=$((current_step + 1))
     progress_bar $current_step $total_steps "Удаление cron-задач..."
     cron_remove
     sleep 0.3
-    
-    # Шаг 2: Удаление конфигурации Nginx
+
     current_step=$((current_step + 1))
     progress_bar $current_step $total_steps "Удаление конфигурации Nginx..."
     rm -f "$NGINX_LINK" "$NGINX_CONF" 2>/dev/null
     nginx -t > /dev/null 2>&1 && systemctl reload nginx > /dev/null 2>&1
     sleep 0.3
-    
-    # Шаг 3: Удаление файла подписки (опционально)
+
     if [[ "$delete_subscription" == "true" ]]; then
         current_step=$((current_step + 1))
         progress_bar $current_step $total_steps "Удаление файла подписки..."
         rm -rf "$WEB_DIR" 2>/dev/null
         sleep 0.3
     fi
-    
-    # Шаг 4: Удаление конфигурации
+
     current_step=$((current_step + 1))
     progress_bar $current_step $total_steps "Удаление конфигурации и данных..."
     rm -rf "$BASE_DIR" 2>/dev/null
     sleep 0.3
-    
-    # Шаг 5: Удаление команды 3xsub
+
     current_step=$((current_step + 1))
     progress_bar $current_step $total_steps "Удаление команды 3xsub..."
     rm -f "$SUBUP_CMD" 2>/dev/null
     sleep 0.3
-    
-    # Финал
+
     current_step=$((current_step + 1))
     progress_done "Удаление завершено"
 
@@ -4698,12 +4601,10 @@ menu_uninstall() {
 
 main_menu() {
     while true; do
-        # Обновляем переменные файла подписки
         init_sub_vars
         
         print_header
 
-        # Статус-бар
         local total_servers
         total_servers=$(servers_count)
 
@@ -4734,7 +4635,6 @@ main_menu() {
             cron_status="${RED}ВЫКЛ${NC}"
         fi
 
-        # Формируем URL подписки
         local use_domain=$(config_get "use_domain" "false")
         local domain=$(config_get "domain" "")
         local use_ssl=$(config_get "use_ssl" "false")
@@ -4802,7 +4702,7 @@ main_menu() {
             0)
                 clear_screen
                 echo ""
-                echo -e "  ${GREEN}До встречи! Используйте: ${WHITE}3xsub${NC}"
+                echo -e "  ${GREEN}Вы вышли! Для повторного запуска введите в терминале: ${WHITE}3xsub${NC}"
                 echo ""
                 exit 0
                 ;;
@@ -4816,8 +4716,7 @@ main_menu() {
 
 main() {
     check_root
-    
-    # Инициализируем переменные файла подписки
+
     [[ -f "$CONFIG_FILE" ]] && init_sub_vars
 
     case "${1:-}" in
@@ -4859,3 +4758,4 @@ main() {
 }
 
 main "$@"
+#LarsGravesen @LarsInvilink
