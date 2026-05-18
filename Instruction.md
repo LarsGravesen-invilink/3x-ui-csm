@@ -1,9 +1,8 @@
 # 3X-UI CSM — Полная инструкция пользователя
 
-> Версия: 1.0  
+> CLI Subscription Manager - Версия: 1.0  
 > Автор: LarsGravesen  
 > Telegram: https://t.me/LarsInvilink  
-> GitHub: https://github.com/LarsGravesen-invilink/3x-ui-csm
 
 ---
 
@@ -34,7 +33,7 @@
 
 ## 1. Что такое 3X-UI CSM
 
-**3X-UI CSM** (Client Subscription Manager) — это CLI-скрипт для Linux-сервера (VPS), который:
+**3X-UI CSM** (CLI Subscription Manager) — это скрипт для Linux-сервера (VPS), который:
 
 - Подключается к одной или нескольким панелям **3x-UI** через API
 - Собирает **VPN-ключи** (VLESS, VMess, Trojan, Shadowsocks, Hysteria2) со всех или выбранных инбаундов
