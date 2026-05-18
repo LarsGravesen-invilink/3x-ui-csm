@@ -306,7 +306,7 @@ print_installer_header() {
     echo -e "  ${GREEN}*${NC} Полное удаление и сброс настроек"
     echo ""
     echo -e "${CYAN}  ──────────────────────────────────────────────────${NC}"
-    echo -e "  ${GRAY}Запуск:${NC} ${WHITE}3xsub${NC}"
+    echo -e "  ${GRAY}Запуск:${NC} ${WHITE}bash 3xsub${NC}"
     echo -e "${CYAN}  ══════════════════════════════════════════════════${NC}"
     echo ""
 }
