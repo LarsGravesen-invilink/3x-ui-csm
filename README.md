@@ -65,7 +65,7 @@
 
 ---
 
-Cкачать и запустить в терминале:
+Запустить установку в терминале (скопируйте и вставьте в терминал):
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/LarsGravesen-invilink/3x-ui-csm/main/3xcsm.sh -o /tmp/3xcsm.sh
