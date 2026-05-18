@@ -7,7 +7,13 @@ BIN="/usr/local/bin/3xsub"
 
 mkdir -p "$BASE_DIR"
 
-curl -fsSL "$REPO/3xcsm.sh" -o "$BASE_DIR/3xcsm.sh"
+echo "Downloading 3xcsm.sh..."
+
+curl -fSL "$REPO/3xcsm.sh" -o "$BASE_DIR/3xcsm.sh"
+
+echo "Checking file..."
+ls -la "$BASE_DIR/3xcsm.sh"
+
 chmod +x "$BASE_DIR/3xcsm.sh"
 
 cat > "$BIN" <<EOF
