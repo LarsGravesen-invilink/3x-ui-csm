@@ -106,7 +106,7 @@ curl -fsSL https://raw.githubusercontent.com/LarsGravesen-invilink/3x-ui-csm/mai
 
 ## Документация
 
-Подробная пошаговая инструкция: **[Instruction.md](Instruction.md)**
+Подробная пошаговая инструкция: **[ТУТ](INSTRUCTION.md)**
 
 ---
 
