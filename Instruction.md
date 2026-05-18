@@ -1,6 +1,6 @@
 # 3X-UI CSM — Полная инструкция пользователя
 
-> CLI Subscription Manager - Версия: 1.0  
+> CLI Subscription Manager
 > Автор: LarsGravesen  
 > Telegram: https://t.me/LarsInvilink  
 
